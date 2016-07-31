@@ -5,7 +5,8 @@
 // ユーザ定義リテラルをうまいこと使えるようにする
 using namespace std::chrono_literals;
 
-void sleep(std::chrono::duration<long> time)
+// 2016/7/31追記 std::chrono::duration<long>だとx.y[sec](0.1secとか)が扱えないですね…修正。
+void sleep(std::chrono::duration<double> time)
 {
     return std::this_thread::sleep_for(time);
 }
