@@ -18,9 +18,16 @@ widgets:
 - archive
 - recent_posts
 about_widget_content: >
-  <p>Etiam porta <em>sem malesuada magna</em> mollis euismod.
-  Cras mattis consectetur purus sit amet fermentum. Aenean
-  lacinia bibendum nulla sed consectetur.</p>
+  <p>よわよわC++er, Android(カスタムROM), mirmidivi developer</p>
+  <p>Twitter:
+  <a href="https://twitter.com/shunonymous">@shunonymous</a>
+  Mastodon(pawoo):
+  <a href="https://pawoo.net/@shunonymous">@shunonymous@pawoo.net</a>
+  GitHub:
+  <a href="https://github.com/shunonymous">shunonymous</a>
+  GitLab(mirror):
+  <a href="https://gitlab.com/shunonymous">shunonymous</a>
+  </p>
 
 # widget behavior
 archive_type: 'monthly'
@@ -29,7 +36,7 @@ show_count: true
 # Miscellaneous
 google_analytics:
 favicon:
-twitter_id:
+twitter_id: shunonymous
 google_plus:
 fb_admins:
 fb_app_id:
