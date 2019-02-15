@@ -29,6 +29,11 @@ about_widget_content: >
   <a href="https://gitlab.com/shunonymous">shunonymous</a>
   </p>
 
+  <p>License:</p>
+  Except where otherwise noted, this website is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+  (All example codes are licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a>)
+  
+
 # widget behavior
 archive_type: 'monthly'
 show_count: true
