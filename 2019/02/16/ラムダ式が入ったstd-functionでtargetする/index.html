@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>ラムダ式が入ったstd::functionでtargetする | shunomemo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近fluidsynthをいじいじしてるんですが、ちょいとC++で扱うとなったらちょいとアレだったりしてアレで躓いたところがあったのでアレした記事です。 まずサンプルコード。 smfplayer.cppview raw12345678910111213141516171819202122232425262728293031323334353637383940414243#include &amp;lt;i">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ラムダ式が入ったstd::functionでtargetする">
+<meta property="og:url" content="https://shunonymous.github.io/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/index.html">
+<meta property="og:site_name" content="shunomemo">
+<meta property="og:description" content="最近fluidsynthをいじいじしてるんですが、ちょいとC++で扱うとなったらちょいとアレだったりしてアレで躓いたところがあったのでアレした記事です。 まずサンプルコード。 smfplayer.cppview raw12345678910111213141516171819202122232425262728293031323334353637383940414243#include &amp;lt;i">
+<meta property="og:locale" content="ja">
+<meta property="og:updated_time" content="2019-02-16T01:48:14.503Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ラムダ式が入ったstd::functionでtargetする">
+<meta name="twitter:description" content="最近fluidsynthをいじいじしてるんですが、ちょいとC++で扱うとなったらちょいとアレだったりしてアレで躓いたところがあったのでアレした記事です。 まずサンプルコード。 smfplayer.cppview raw12345678910111213141516171819202122232425262728293031323334353637383940414243#include &amp;lt;i">
+<meta name="twitter:creator" content="@shunonymous">
+  
+    <link rel="alternate" href="/atom.xml" title="shunomemo" type="application/atom+xml">
+  
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/shunomemo/css/styles.css">
+  
+
+</head>
+</html>
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-menu-navbar">
+      <ul class="nav navbar-nav">
+        
+          <li><a class href="/shunomemo/index.html">Home</a></li>
+        
+          <li><a class href="/shunomemo/archives/">Archives</a></li>
+        
+      </ul>
+
+      <!--
+      <ul class="nav navbar-nav navbar-right">
+        
+          <li><a href="/atom.xml" title="RSS Feed"><i class="fa fa-rss"></i></a></li>
+        
+      </ul>
+      -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="container">
+    <div class="blog-header">
+  <h1 class="blog-title">shunomemo</h1>
+  
+</div>
+
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+          <article id="post-ラムダ式が入ったstd-functionでtargetする" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    
+  
+    <h1 class="article-title" itemprop="name">
+      ラムダ式が入ったstd::functionでtargetする
+    </h1>
+  
+
+
+  </header>
+
+  <div class="article-meta">
+    <div class="article-datetime">
+  <a href="/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/" class="article-date"><time datetime="2019-02-15T20:06:21.000Z" itemprop="datePublished">2019-02-16</time></a>
+</div>
+
+    
+    
+
+  </div>
+  <div class="article-inner">
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近<a href="http://www.fluidsynth.org/" target="_blank" rel="noopener">fluidsynth</a>をいじいじしてるんですが、ちょいとC++で扱うとなったらちょいとアレだったりしてアレで躓いたところがあったのでアレした記事です。</p>
+<p>まずサンプルコード。</p>
+<figure class="highlight cpp"><figcaption><span>smfplayer.cpp</span><a href="/shunomemo/downloads/code/smfplayer.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fluidsynth.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">handler</span><span class="params">(<span class="keyword">void</span>* synth, <span class="keyword">fluid_midi_event_t</span>* event)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    fluid_synth_handle_midi_event(synth, event);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fluid_midi_event_get_type(event) &lt;&lt; <span class="string">"\r"</span> &lt;&lt; <span class="built_in">std</span>::flush;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">fluid_settings_t</span>* settings;</span><br><span class="line">    <span class="keyword">fluid_player_t</span>* player;</span><br><span class="line">    <span class="keyword">fluid_audio_driver_t</span>* adriver;</span><br><span class="line">    <span class="keyword">fluid_synth_t</span>* synth;</span><br><span class="line">    <span class="keyword">fluid_midi_event_t</span>* event;</span><br><span class="line"></span><br><span class="line">    settings = new_fluid_settings();</span><br><span class="line">    fluid_settings_setstr(settings, <span class="string">"audio.driver"</span>, <span class="string">"pulseaudio"</span>);</span><br><span class="line">    synth = new_fluid_synth(settings);</span><br><span class="line">    player = new_fluid_player(synth);</span><br><span class="line">    adriver = new_fluid_audio_driver(settings, synth);</span><br><span class="line">    fluid_player_set_playback_callback(player, handler, synth);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* process command line arguments */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; argc; i++) {</span><br><span class="line">        <span class="keyword">if</span> (fluid_is_soundfont(argv[i])) {</span><br><span class="line">	    fluid_synth_sfload(synth, argv[<span class="number">1</span>], <span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">if</span> (fluid_is_midifile(argv[i])) {</span><br><span class="line">            fluid_player_add(player, argv[i]);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    fluid_player_play(player);</span><br><span class="line">    fluid_player_join(player);</span><br><span class="line">    delete_fluid_player(player);</span><br><span class="line">    delete_fluid_audio_driver(adriver);</span><br><span class="line">    delete_fluid_synth(synth);</span><br><span class="line">    delete_fluid_settings(settings);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./smfplayet &lt;SoundFont&gt; &lt;SMFFile&gt;</span><br></pre></td></tr></table></figure>
+<p>やってることはなんのこたぁない、smfプレイヤーやりつつMIDIイベントの種類見てるだけです。</p>
+<p>そのあたりは関数<code>handler(void* synth, fluid_midi_event_t* event)</code>で定義してあるんですがそいつを<code>fluid_player_set_playback_callback(player, handler, synth)</code>に渡してるわけです。</p>
+<p>それにしてもこの<code>handler</code>、短いので<code>main</code>関数の中に書いてしまいたくなりますね。</p>
+<p>ところでC++にはラムダ式ってやつがあります。</p>
+<p>つまりこゆこと。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">fluid_player_set_playback_callback(player,</span><br><span class="line">       [](<span class="keyword">void</span>* data, <span class="keyword">fluid_midi_event_t</span>* event)</span><br><span class="line">	   &#123;</span><br><span class="line">	       fluid_synth_handle_midi_event(synth, event);</span><br><span class="line">	       <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fluid_midi_event_get_type(event) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	       <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	   &#125;</span><br><span class="line">       , event);</span><br></pre></td></tr></table></figure>
+<p>…今試したら普通に動いたやんけ。本日の記事完ッ!</p>
+<p>…多分動かないと思ってたのはキャプチャつけてたからだ。うん。</p>
+<p>…あぁ、その色々と試行錯誤してたんです。例えばそう、std::functionに入れたりとか。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">std</span>::function&lt;<span class="keyword">int</span>(<span class="keyword">void</span>*, <span class="keyword">fluid_midi_event_t</span>*)&gt; handler = [](<span class="keyword">void</span>* data, <span class="keyword">fluid_midi_event_t</span>* event)</span><br><span class="line">					   &#123;</span><br><span class="line">					       fluid_synth_handle_midi_event(synth, event);</span><br><span class="line">					       <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fluid_midi_event_get_type(event) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">					       <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">					   &#125;;</span><br><span class="line"><span class="comment">// コンパイルエラー</span></span><br><span class="line"><span class="comment">// fluid_player_set_playback_callback(player, handler, synth);</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>無念<code>fluid_player_set_playback_callback</code>に渡してやらねばならぬのは古のCの関数ポインタ。</p>
+<p><a href="https://cpprefjp.github.io/" target="_blank" rel="noopener">cpprefjp</a>を眺めていると<code>target</code>なるメンバ関数を発見。</p>
+<p>保持している関数へのポインタを返すとの事なので今回みたいなケースに使えばよさそうです。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fluid_player_set_playback_callback(player, *handler.target&lt;<span class="keyword">int</span>(*)(<span class="keyword">void</span>*, <span class="keyword">fluid_midi_event_t</span>*)&gt;(), event);</span><br></pre></td></tr></table></figure>
+<p>んー。</p>
+<p>ともあれこれでコンパイルは通りました。きっとうまくいくはずです。早速実行してみましょう。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">segmentation fault (core dumped)</span><br></pre></td></tr></table></figure>
+<p>無慈悲にも突きつけられるコアダンプ!殺される初心者プログラマー!</p>
+<p>ナンセンスな御託はさておき、この<code>handler.target&lt;int(*)(void*, fluid_midi_event_t*)&gt;()</code>、<code>nullptr</code>でした。</p>
+<p>ちなみにラムダ式の型の<a href="http://0xcc.net/blog/archives/000095.html" target="_blank" rel="noopener">デマングル</a>を試みたところ、<code>main::$_0</code>なる型?が得られました。</p>
+<p><code>function::target</code>は指定された型と元となる関数の型が一致してないと<code>nullptr</code>を返すのでそれでしょう。</p>
+<p>さて、どうしよう…</p>
+<p>ググってみると答えに行き着きました。</p>
+<p><a href="http://program.station.ez-net.jp/special/handbook/cpp/syntax/func-pointer.bridge.asp" target="_blank" rel="noopener">こちら</a>をヒントに、代入時に<code>const_cast</code>する事で落ち着きました。</p>
+<figure class="highlight cpp"><figcaption><span>smfplayer-final.cpp</span><a href="/shunomemo/downloads/code/smfplayer-final.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fluidsynth.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">fluid_settings_t</span>* settings;</span><br><span class="line">    <span class="keyword">fluid_player_t</span>* player;</span><br><span class="line">    <span class="keyword">fluid_audio_driver_t</span>* adriver;</span><br><span class="line">    <span class="keyword">fluid_synth_t</span>* synth;</span><br><span class="line">    <span class="keyword">fluid_midi_event_t</span>* event;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::function handler = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>(*)(<span class="keyword">void</span>*, <span class="keyword">fluid_midi_event_t</span>*)&gt;(</span><br><span class="line">	[](<span class="keyword">void</span>* synth, <span class="keyword">fluid_midi_event_t</span>* event){</span><br><span class="line">	    fluid_synth_handle_midi_event(synth, event);</span><br><span class="line">	    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fluid_midi_event_get_type(event) &lt;&lt; <span class="string">"\n"</span> &lt;&lt; <span class="built_in">std</span>::flush;</span><br><span class="line">	    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	});</span><br><span class="line"></span><br><span class="line">    settings = new_fluid_settings();</span><br><span class="line">    fluid_settings_setstr(settings, <span class="string">"audio.driver"</span>, <span class="string">"pulseaudio"</span>);</span><br><span class="line">    synth = new_fluid_synth(settings);</span><br><span class="line">    player = new_fluid_player(synth);</span><br><span class="line">    adriver = new_fluid_audio_driver(settings, synth);</span><br><span class="line">    fluid_player_set_playback_callback(player, *handler.target&lt;<span class="keyword">int</span>(*)(<span class="keyword">void</span>*, <span class="keyword">fluid_midi_event_t</span>*)&gt;(), synth);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* process command line arguments */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; argc; i++) {</span><br><span class="line">        <span class="keyword">if</span> (fluid_is_soundfont(argv[i])) {</span><br><span class="line">	    fluid_synth_sfload(synth, argv[<span class="number">1</span>], <span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">if</span> (fluid_is_midifile(argv[i])) {</span><br><span class="line">            fluid_player_add(player, argv[i]);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    fluid_player_play(player);</span><br><span class="line">    fluid_player_join(player);</span><br><span class="line">    delete_fluid_player(player);</span><br><span class="line">    delete_fluid_audio_driver(adriver);</span><br><span class="line">    delete_fluid_synth(synth);</span><br><span class="line">    delete_fluid_settings(settings);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+      
+
+    
+
+    <footer class="article-footer">
+      <a data-url="https://shunonymous.github.io/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/" data-id="cjs6trerx0003lhq7tyfreslo" class="article-share-link">
+        <i class="fa fa-share"></i> Share
+      </a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/shunomemo/tags/C/">C++</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  <li role="presentation">
+    <a href="/shunomemo/2015/12/20/cxxsleeep/" id="article-nav-older" class="article-nav-link-wrap">
+      <i class="fa fa-chevron-left pull-left"></i>
+      <span class="article-nav-link-title">C++でプログラムの動作を一定時間止める</span>
+    </a>
+  </li>
+  
+  
+  <li role="presentation">
+    <a href="/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-link-title">(no title)</span>
+      <i class="fa fa-chevron-right pull-right"></i>
+    </a>
+  </li>
+  
+</ul>
+
+
+  
+</article>
+
+
+
+
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          
+  <div class="sidebar-module sidebar-module-inset">
+  <h4>About</h4>
+  <p>よわよわC++er, Android(カスタムROM), mirmidivi developer</p> <p>Twitter: <a href="https://twitter.com/shunonymous">@shunonymous</a> Mastodon(pawoo): <a href="https://pawoo.net/@shunonymous">@shunonymous@pawoo.net</a> GitHub: <a href="https://github.com/shunonymous">shunonymous</a> GitLab(mirror): <a href="https://gitlab.com/shunonymous">shunonymous</a> </p>
+<p>License:</p> Except where otherwise noted, this website is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> (All example codes are licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a>)
+
+</div>
+
+
+  
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tags</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/shunomemo/tags/C/">C++</a><span class="sidebar-module-list-count">2</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Tag Cloud</h4>
+    <p class="tagcloud">
+      <a href="/shunomemo/tags/C/" style="font-size: 10px;">C++</a>
+    </p>
+  </div>
+
+
+  
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/shunomemo/archives/2019/02/">二月 2019</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/shunomemo/archives/2015/12/">十二月 2015</a><span class="sidebar-module-list-count">1</span></li></ul>
+  </div>
+
+
+
+  
+  <div class="sidebar-module">
+    <h4>Recents</h4>
+    <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/">(no title)</a>
+        </li>
+      
+        <li>
+          <a href="/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/">ラムダ式が入ったstd::functionでtargetする</a>
+        </li>
+      
+        <li>
+          <a href="/shunomemo/2015/12/20/cxxsleeep/">C++でプログラムの動作を一定時間止める</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+        </div>
+    </div>
+  </div>
+  <footer class="blog-footer">
+  <div class="container">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Shun Terabayashi<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+
+<script src="/shunomemo/js/script.js"></script>
+
+</body>
+</html>

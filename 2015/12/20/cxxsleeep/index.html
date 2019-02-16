@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
   <title>C++でプログラムの動作を一定時間止める | shunomemo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="・この記事は初心者 C++er Advent Calendar 2015 - Adventarの20日目の記事です。昨日はろっさむさん(@4_mio_11)で、C++をのぞく時、C++もまたこちらをのぞいているのだでした。・勿論C++初心者が何か書いてみる方です。C++力、文章力共にアレなので生暖かい目で見守っていただければ幸いです。・(2016/6/12追記)Markdownが消えたりしたので再">
+<meta name="keywords" content="C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++でプログラムの動作を一定時間止める">
 <meta property="og:url" content="https://shunonymous.github.io/shunomemo/2015/12/20/cxxsleeep/index.html">
 <meta property="og:site_name" content="shunomemo">
 <meta property="og:description" content="・この記事は初心者 C++er Advent Calendar 2015 - Adventarの20日目の記事です。昨日はろっさむさん(@4_mio_11)で、C++をのぞく時、C++もまたこちらをのぞいているのだでした。・勿論C++初心者が何か書いてみる方です。C++力、文章力共にアレなので生暖かい目で見守っていただければ幸いです。・(2016/6/12追記)Markdownが消えたりしたので再">
-<meta property="og:updated_time" content="2016-06-12T09:50:05.869Z">
+<meta property="og:locale" content="ja">
+<meta property="og:updated_time" content="2019-02-15T18:50:01.150Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++でプログラムの動作を一定時間止める">
 <meta name="twitter:description" content="・この記事は初心者 C++er Advent Calendar 2015 - Adventarの20日目の記事です。昨日はろっさむさん(@4_mio_11)で、C++をのぞく時、C++もまたこちらをのぞいているのだでした。・勿論C++初心者が何か書いてみる方です。C++力、文章力共にアレなので生暖かい目で見守っていただければ幸いです。・(2016/6/12追記)Markdownが消えたりしたので再">
@@ -32,7 +34,7 @@
   
 
 </head>
-
+</html>
 <body>
   <nav class="navbar navbar-inverse">
   <div class="container">
@@ -51,11 +53,9 @@
     <div class="collapse navbar-collapse" id="main-menu-navbar">
       <ul class="nav navbar-nav">
         
-          <li><a class=""
-                 href="/shunomemo/index.html">Home</a></li>
+          <li><a class href="/shunomemo/index.html">Home</a></li>
         
-          <li><a class=""
-                 href="/shunomemo/archives/">Archives</a></li>
+          <li><a class href="/shunomemo/archives/">Archives</a></li>
         
       </ul>
 
@@ -104,30 +104,30 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <p>・この記事は初心者 C++er Advent Calendar 2015 - Adventarの20日目の記事です。昨日はろっさむさん(<a href="https://twitter.com/4_mio_11" target="_blank" rel="external">@4_mio_11</a>)で、<a href="http://rossamu.hatenablog.com/entry/2015/12/19/161112" target="_blank" rel="external">C++をのぞく時、C++もまたこちらをのぞいているのだ</a>でした。<br>・勿論C++初心者が何か書いてみる方です。C++力、文章力共にアレなので生暖かい目で見守っていただければ幸いです。<br>・(2016/6/12追記)Markdownが消えたりしたので再現ついでに少々追加しました。</p>
-<p>プログラムを書く上で処理をしばらく止めておきたい事があります。n秒にm回処理を行いたいとかそんなのです。組み込み用途(<a href="https://ja.wikipedia.org/wiki/%E3%83%91%E3%83%AB%E3%82%B9%E5%B9%85%E5%A4%89%E8%AA%BF" target="_blank" rel="external">PWM制御</a>など)とかゲームプログラミング(FPS周りとか)とかだと多いと思います。</p>
+        <p>・この記事は初心者 C++er Advent Calendar 2015 - Adventarの20日目の記事です。昨日はろっさむさん(<a href="https://twitter.com/4_mio_11" target="_blank" rel="noopener">@4_mio_11</a>)で、<a href="http://rossamu.hatenablog.com/entry/2015/12/19/161112" target="_blank" rel="noopener">C++をのぞく時、C++もまたこちらをのぞいているのだ</a>でした。<br>・勿論C++初心者が何か書いてみる方です。C++力、文章力共にアレなので生暖かい目で見守っていただければ幸いです。<br>・(2016/6/12追記)Markdownが消えたりしたので再現ついでに少々追加しました。</p>
+<p>プログラムを書く上で処理をしばらく止めておきたい事があります。n秒にm回処理を行いたいとかそんなのです。組み込み用途(<a href="https://ja.wikipedia.org/wiki/%E3%83%91%E3%83%AB%E3%82%B9%E5%B9%85%E5%A4%89%E8%AA%BF" target="_blank" rel="noopener">PWM制御</a>など)とかゲームプログラミング(FPS周りとか)とかだと多いと思います。</p>
 <p>睡眠は大事なのです。人も、プログラミングも。</p>
 <h2 id="よくある方法"><a href="#よくある方法" class="headerlink" title="よくある方法"></a>よくある方法</h2><p>プラットフォーム依存のライブラリに用意された関数を使う事が多いと思います。ググった限りはそんな感じでした。Advent Calendar前に。執筆直前に改めてググってみたら今から書くような事がトップに出てきました。なんてこったい。</p>
-<p><a href="https://ja.wikipedia.org/wiki/POSIX" target="_blank" rel="external">POSIX</a> APIにはsleep関数が<a href="http://pubs.opengroup.org/onlinepubs/009695399/functions/sleep.html" target="_blank" rel="external">用意されています</a>し、Win32 APIにも似たようなのが<a href="https://msdn.microsoft.com/ja-jp/library/cc429358.aspx" target="_blank" rel="external">あるっぽい</a>です。</p>
-<h2 id="こいつらじゃイカンのか"><a href="#こいつらじゃイカンのか" class="headerlink" title="こいつらじゃイカンのか?"></a>こいつらじゃイカンのか?</h2><p>イカン(個人の感想です)。まずWindows向けに書かれたやつがUNIX(GNU/Linuxとか*BSDとかOS Xとか含む)で使えなくなります。逆もまた然り。<a href="https://twitter.com/hashtag/defineとかでごにょごにょやるのも" target="_blank" rel="noopener noreferrer">#defineとかでごにょごにょやるのも</a><a href="http://boost.cppll.jp/HEAD/libs/preprocessor/doc/topics/problems.html" target="_blank" rel="external">あまり</a><a href="http://boost.cppll.jp/HEAD/libs/preprocessor/doc/topics/problems.html" target="_blank" rel="external">よろしくない</a>方法みたいです。</p>
+<p><a href="https://ja.wikipedia.org/wiki/POSIX" target="_blank" rel="noopener">POSIX</a> APIにはsleep関数が<a href="http://pubs.opengroup.org/onlinepubs/009695399/functions/sleep.html" target="_blank" rel="noopener">用意されています</a>し、Win32 APIにも似たようなのが<a href="https://msdn.microsoft.com/ja-jp/library/cc429358.aspx" target="_blank" rel="noopener">あるっぽい</a>です。</p>
+<h2 id="こいつらじゃイカンのか"><a href="#こいつらじゃイカンのか" class="headerlink" title="こいつらじゃイカンのか?"></a>こいつらじゃイカンのか?</h2><p>イカン(個人の感想です)。まずWindows向けに書かれたやつがUNIX(GNU/Linuxとか*BSDとかOS Xとか含む)で使えなくなります。逆もまた然り。#defineとかでごにょごにょやるのも<a href="http://boost.cppll.jp/HEAD/libs/preprocessor/doc/topics/problems.html" target="_blank" rel="noopener">あまり</a><a href="http://boost.cppll.jp/HEAD/libs/preprocessor/doc/topics/problems.html" target="_blank" rel="noopener">よろしくない</a>方法みたいです。</p>
 <p>それに上記の方法はどっちかというとCの方法です。C++の方法があるならそちらの方がよいでしょう。</p>
 <h2 id="それ、標準ライブラリでできるよ"><a href="#それ、標準ライブラリでできるよ" class="headerlink" title="それ、標準ライブラリでできるよ!"></a>それ、標準ライブラリでできるよ!</h2><p>使うのはchronoライブラリとthreadライブラリです。これらはC++11で入ったライブラリなので-std=c++11とかしてなんとかしてください。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ clang++ -std=c++11 -o sleep sleep.cpp</span><br></pre></td></tr></table></figure>
-<h4 id="chrono"><a href="#chrono" class="headerlink" title="chrono"></a>chrono</h4><p>時間ライブラリ。<a href="https://cpplover.blogspot.jp/2015/01/c11-chrono.html" target="_blank" rel="external">このあたり</a>が詳しいです。</p>
+<h4 id="chrono"><a href="#chrono" class="headerlink" title="chrono"></a>chrono</h4><p>時間ライブラリ。<a href="https://cpplover.blogspot.jp/2015/01/c11-chrono.html" target="_blank" rel="noopener">このあたり</a>が詳しいです。</p>
 <h4 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h4><p>スレッドを扱うライブラリ。マルチスレッドなんかもこれ使えばいけますが、今回は処理を止めるだけに使います。</p>
-<h2 id="実際にやってみた"><a href="#実際にやってみた" class="headerlink" title="実際にやってみた"></a>実際にやってみた</h2><figure class="highlight cpp"><figcaption><span>cxx11sleep.cpp</span><a href="/shunomemo/downloads/code/cxx11sleep.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>{</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"(。-ω-)zzz. . . "</span> &lt;&lt; <span class="string">"\r"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3秒間おやすみ。</span></span><br><span class="line">    <span class="comment">// 他にnanoseconds、microseconds、milliseconds、minutes、hoursが使える。</span></span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">3</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// おはようございます!</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"(。ﾟωﾟ) ﾊｯ!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h2 id="実際にやってみた"><a href="#実際にやってみた" class="headerlink" title="実際にやってみた"></a>実際にやってみた</h2><figure class="highlight cpp"><figcaption><span>cxx11sleep.cpp</span><a href="/shunomemo/downloads/code/cxx11sleep.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"(。-ω-)zzz. . . "</span> &lt;&lt; <span class="string">"\r"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3秒間おやすみ。</span></span><br><span class="line">    <span class="comment">// 他にnanoseconds、microseconds、milliseconds、minutes、hoursが使える。</span></span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">3</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// おはようございます!</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"(。ﾟωﾟ) ﾊｯ!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
 <p>こんな感じになります。とりあえずこれで問題は解決です。</p>
 <h2 id="ところでこの関数を見てくれ。こいつをどう思う"><a href="#ところでこの関数を見てくれ。こいつをどう思う" class="headerlink" title="ところでこの関数を見てくれ。こいつをどう思う?"></a>ところでこの関数を見てくれ。こいつをどう思う?</h2><p>すごく…長いです…</p>
 <p>やっぱり3sとか書きたいですね。</p>
 <p>ユーザー定義リテラルでなんとかする</p>
-<p>ユーザー定義リテラルについては<a href="http://cpplover.blogspot.jp/2012/02/blog-post_16.html" target="_blank" rel="external">こちら</a>がわかりやすいかと。</p>
+<p>ユーザー定義リテラルについては<a href="http://cpplover.blogspot.jp/2012/02/blog-post_16.html" target="_blank" rel="noopener">こちら</a>がわかりやすいかと。</p>
 <p>なんと、C++14のchronoライブラリには時間単位のユーザ定義リテラルが定義されています。大人の事情とかでC++14が使えない人は自前実装して圧倒的成長を果たしましょう。できちゃった人は今日から初心者を名乗るのは諦めましょう。</p>
-<h3 id="なんとかしてみたコード"><a href="#なんとかしてみたコード" class="headerlink" title="なんとかしてみたコード"></a>なんとかしてみたコード</h3><figure class="highlight cpp"><figcaption><span>cxx14sleep.cpp</span><a href="/shunomemo/downloads/code/cxx14sleep.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ユーザ定義リテラルをうまいこと使えるようにする</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::chrono_literals;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>{</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???「三分間待ってやる」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// あれって実際には50秒とかそのへんらしいですね。</span></span><br><span class="line">    <span class="comment">// 他にns、us、ms、min、hが使える。</span></span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="number">50</span>s);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???「時間だ。答えを聞こう。」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???&amp;???「バルス!!!」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h3 id="なんとかしてみたコード"><a href="#なんとかしてみたコード" class="headerlink" title="なんとかしてみたコード"></a>なんとかしてみたコード</h3><figure class="highlight cpp"><figcaption><span>cxx14sleep.cpp</span><a href="/shunomemo/downloads/code/cxx14sleep.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ユーザ定義リテラルをうまいこと使えるようにする</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::chrono_literals;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???「三分間待ってやる」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// あれって実際には50秒とかそのへんらしいですね。</span></span><br><span class="line">    <span class="comment">// 他にns、us、ms、min、hが使える。</span></span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="number">50</span>s);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???「時間だ。答えを聞こう。」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???&amp;???「バルス!!!」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
 <p><s>おそらく関数エイリアスなる手法を用いればもうちょっとなんとかなる気はしますが、闇の気配を感じたのでここまでにしておきます。</s></p>
 <p>なんの事はありませんでした。</p>
-<figure class="highlight cpp"><figcaption><span>newcxx14sleep.cpp</span><a href="/shunomemo/downloads/code/newcxx14sleep.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ユーザ定義リテラルをうまいこと使えるようにする</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::chrono_literals;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sleep</span><span class="params">(<span class="built_in">std</span>::chrono::duration&lt;<span class="keyword">long</span>&gt; time)</span></span><br><span class="line"></span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">std</span>::this_thread::sleep_for(time);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>{</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???「三分間待ってやる」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// あれって実際には50秒とかそのへんらしいですね。</span></span><br><span class="line">    <span class="comment">// 他にns、us、ms、min、hが使える。</span></span><br><span class="line">    sleep(<span class="number">50</span>s);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???「時間だ。答えを聞こう。」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???&amp;???「バルス!!!」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><figcaption><span>newcxx14sleep.cpp</span><a href="/shunomemo/downloads/code/newcxx14sleep.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ユーザ定義リテラルをうまいこと使えるようにする</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::chrono_literals;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2016/7/31追記 std::chrono::duration&lt;long&gt;だとx.y[sec](0.1secとか)が扱えないですね…修正。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sleep</span><span class="params">(<span class="built_in">std</span>::chrono::duration&lt;<span class="keyword">double</span>&gt; time)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">std</span>::this_thread::sleep_for(time);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???「三分間待ってやる」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// あれって実際には50秒とかそのへんらしいですね。</span></span><br><span class="line">    <span class="comment">// 他にns、us、ms、min、hが使える。</span></span><br><span class="line">    sleep(<span class="number">50</span>s);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???「時間だ。答えを聞こう。」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"???&amp;???「バルス!!!」"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
 <p>とまぁこんな感じでおしまいです。初めてのAdvent Calendar参戦&amp;残業続きでいろいろグダグダしましたがなんとかなったかなーと思います。</p>
-<p>明日はIさん(<a href="https://twitter.com/wx257osn2" target="_blank" rel="external">@wx257osn2</a>)です。初心者向けの記事を期待しましょう。</p>
+<p>明日はIさん(<a href="https://twitter.com/wx257osn2" target="_blank" rel="noopener">@wx257osn2</a>)です。初心者向けの記事を期待しましょう。</p>
 <h3 id="第2版に寄せて"><a href="#第2版に寄せて" class="headerlink" title="第2版に寄せて"></a>第2版に寄せて</h3><p>昔に書いた記事を見るのは恥ずかしい。</p>
 <h3 id="最後に"><a href="#最後に" class="headerlink" title="最後に"></a>最後に</h3><p>良い子は早く寝ような。</p>
 
@@ -140,7 +140,7 @@
     
 
     <footer class="article-footer">
-      <a data-url="https://shunonymous.github.io/shunomemo/shunomemo/2015/12/20/cxxsleeep/" data-id="cipcml7ed0000pbqe031c5950" class="article-share-link">
+      <a data-url="https://shunonymous.github.io/shunomemo/2015/12/20/cxxsleeep/" data-id="cjs6trerj0000lhq7ov7uj5pu" class="article-share-link">
         <i class="fa fa-share"></i> Share
       </a>
       
@@ -152,6 +152,18 @@
   </div>
   
     
+<ul id="article-nav" class="nav nav-pills nav-justified">
+  
+  
+  <li role="presentation">
+    <a href="/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-link-title">ラムダ式が入ったstd::functionでtargetする</span>
+      <i class="fa fa-chevron-right pull-right"></i>
+    </a>
+  </li>
+  
+</ul>
+
 
   
 </article>
@@ -164,7 +176,8 @@
           
   <div class="sidebar-module sidebar-module-inset">
   <h4>About</h4>
-  <p>Twitter:<a href="https://twitter.com/shunonymous">@shunonymous</a> GitHub:<a href="https://github.com/shunonymous">shunonymous</a></p>
+  <p>よわよわC++er, Android(カスタムROM), mirmidivi developer</p> <p>Twitter: <a href="https://twitter.com/shunonymous">@shunonymous</a> Mastodon(pawoo): <a href="https://pawoo.net/@shunonymous">@shunonymous@pawoo.net</a> GitHub: <a href="https://github.com/shunonymous">shunonymous</a> GitLab(mirror): <a href="https://gitlab.com/shunonymous">shunonymous</a> </p>
+<p>License:</p> Except where otherwise noted, this website is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> (All example codes are licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a>)
 
 </div>
 
@@ -175,7 +188,7 @@
   
   <div class="sidebar-module">
     <h4>Tags</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/shunomemo/tags/C/">C++</a><span class="sidebar-module-list-count">1</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/shunomemo/tags/C/">C++</a><span class="sidebar-module-list-count">2</span></li></ul>
   </div>
 
 
@@ -192,7 +205,7 @@
   
   <div class="sidebar-module">
     <h4>Archives</h4>
-    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/shunomemo/archives/2015/12/">12月 2015</a><span class="sidebar-module-list-count">1</span></li></ul>
+    <ul class="sidebar-module-list"><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/shunomemo/archives/2019/02/">二月 2019</a><span class="sidebar-module-list-count">2</span></li><li class="sidebar-module-list-item"><a class="sidebar-module-list-link" href="/shunomemo/archives/2015/12/">十二月 2015</a><span class="sidebar-module-list-count">1</span></li></ul>
   </div>
 
 
@@ -201,6 +214,14 @@
   <div class="sidebar-module">
     <h4>Recents</h4>
     <ul class="sidebar-module-list">
+      
+        <li>
+          <a href="/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/">(no title)</a>
+        </li>
+      
+        <li>
+          <a href="/shunomemo/2019/02/16/ラムダ式が入ったstd-functionでtargetする/">ラムダ式が入ったstd::functionでtargetする</a>
+        </li>
       
         <li>
           <a href="/shunomemo/2015/12/20/cxxsleeep/">C++でプログラムの動作を一定時間止める</a>
@@ -217,7 +238,7 @@
   <footer class="blog-footer">
   <div class="container">
     <div id="footer-info" class="inner">
-      &copy; 2016 Shun Terabayashi<br>
+      &copy; 2019 Shun Terabayashi<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
